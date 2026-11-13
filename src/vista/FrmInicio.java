@@ -1,41 +1,50 @@
 package vista;
 
-import dao.ClienteDAO;
-import modelo.Cliente;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.FlowLayout;
-import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class FrmInicio extends JFrame {
 
     public FrmInicio() {
-        setTitle("Sistema Bancario - Inicio");
-        setSize(360, 140);
+        setTitle("Sistema Bancario - Selección de Módulo");
+        setSize(420, 200);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+        setResizable(false);
 
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 25));
+        JPanel mainPanel = new JPanel(new GridLayout(2, 1, 10, 10));
+
+        JLabel lblTitulo = new JLabel("Bienvenido al Sistema Bancario", JLabel.CENTER);
+        lblTitulo.setFont(new Font("Arial", Font.BOLD, 16));
+        mainPanel.add(lblTitulo);
+
+        JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
         JButton btnAdmin = new JButton("Módulo Administración");
         JButton btnCajero = new JButton("Módulo Cajero");
 
-        // Evento temporal para verificar lectura de la BD al pulsar Administración
+        btnAdmin.setFont(new Font("Arial", Font.PLAIN, 13));
+        btnCajero.setFont(new Font("Arial", Font.PLAIN, 13));
+
+        // Evento para abrir el Módulo de Administración
         btnAdmin.addActionListener(e -> {
-            ClienteDAO dao = new ClienteDAO();
-            List<Cliente> clientes = dao.listarClientes();
-            JOptionPane.showMessageDialog(this, 
-                "Acceso a Administración.\nClientes registrados en la BD remota: " + clientes.size());
+            new FrmAdmin().setVisible(true);
         });
 
+        // Evento para abrir el Módulo de Cajero Automático
         btnCajero.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Acceso a Módulo Cajero.");
+            new FrmCajero().setVisible(true);
         });
 
-        panel.add(btnAdmin);
-        panel.add(btnCajero);
-        add(panel);
+        panelBotones.add(btnAdmin);
+        panelBotones.add(btnCajero);
+        mainPanel.add(panelBotones);
+
+        add(mainPanel);
     }
 
     public static void main(String[] args) {
